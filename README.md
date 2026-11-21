@@ -3,6 +3,7 @@
 ## Tecnologías utilizadas
 <details> 
 
+
 <summary>Ver Tecnologías utilizadas</summary>
 
 - C#
