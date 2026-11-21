@@ -1,0 +1,330 @@
+﻿
+@model MVCWebASPCore.DTOs.InvoiceCreateDto
+
+@{
+    ViewData["Title"] = "Edit Invoice";
+}
+
+<h2>Edit Invoice</h2>
+
+<hr />
+
+<form asp-action="Edit"
+      asp-route-id="@ViewContext.RouteData.Values["id"]"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <!-- Fecha -->
+    <div class="mb-3">
+        <label asp-for="Date" class="form-label">Date</label>
+        <input asp-for="Date" type="date" class="form-control" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+
+    <!-- Cliente -->
+    <div class="mb-3">
+        <label asp-for="IdClient" class="form-label">Client</label>
+
+        <select asp-for="IdClient"
+                asp-items="ViewBag.Clients"
+                class="form-select">
+            <option value="">Select a client</option>
+        </select>
+
+        <span asp-validation-for="IdClient" class="text-danger"></span>
+    </div>
+
+    <hr />
+
+    <h4>Products</h4>
+
+    <div class="row mb-3">
+
+        <div class="col-md-4">
+            <label class="form-label">Product</label>
+
+            <select id="product" class="form-select"
+                    asp-items="ViewBag.Products">
+                <option value="">Select a product</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label">Quantity</label>
+            <input type="number" id="quantity"
+                   class="form-control" value="1" min="1" />
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label">Price</label>
+            <input type="number" id="price"
+                   class="form-control" min="0" step="0.01" />
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="button" class="btn btn-success"
+                    onclick="addProduct()">
+                Add Product
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Tabla de productos -->
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="productList">
+
+            @for (int i = 0; i < Model.Products.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden"
+                               name="Products[@i].IdProduct"
+                               value="@Model.Products[i].IdProduct" />
+
+                   
+                        ID: @Model.Products[i].IdProduct
+                        <br />
+                        Producto: @Model.Products[i].NameProduct
+
+
+                    </td>
+
+                    <td>
+                        <input type="number"
+                               name="Products[@i].Quantity"
+                               class="form-control quantity"
+                               value="@Model.Products[i].Quantity"
+                               min="1"
+                               onchange="calculateTotal()" />
+                    </td>
+
+                    <td>
+                        <input type="number"
+                               name="Products[@i].Price"
+                               class="form-control price"
+                               value="@Model.Products[i].Price"
+                               min="0"
+                               step="0.01"
+                               onchange="calculateTotal()" />
+                    </td>
+
+                    <td class="subtotal">
+                        @(Model.Products[i].Quantity * Model.Products[i].Price)
+                    </td>
+
+                    <td>
+                        <button type="button"
+                                class="btn btn-danger btn-sm"
+                                onclick="removeProduct(this)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <th colspan="3" class="text-end">Total:</th>
+                <th id="total">0.00</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <button type="submit" class="btn btn-primary">
+        Save Changes
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        let index = @Model.Products.Count;
+
+        function addProduct() {
+
+            const select = document.getElementById("product");
+            const productId = select.value;
+
+            if (!productId) {
+                alert("Select a product");
+                return;
+            }
+
+            const productName =
+                select.options[select.selectedIndex].text;
+
+            const quantity =
+                parseInt(document.getElementById("quantity").value);
+
+            const price =
+                parseFloat(document.getElementById("price").value);
+
+            if (!Number.isInteger(quantity) || quantity <= 0 ||
+                !Number.isFinite(price) || price < 0) {
+                alert("Enter a valid quantity and price");
+                return;
+            }
+
+            // Evitar productos repetidos
+            const existing = document.querySelectorAll(
+                'input[name$=".IdProduct"]'
+            );
+
+            for (const input of existing) {
+                if (input.value === productId) {
+                    alert("This product is already added");
+                    return;
+                }
+            }
+
+            const subtotal = quantity * price;
+
+            const row = document.createElement("tr");
+
+            const tdProduct = document.createElement("td");
+
+            const hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.name = `Products[${index}].IdProduct`;
+            hidden.value = productId;
+
+            tdProduct.appendChild(hidden);
+            tdProduct.appendChild(document.createTextNode(productName));
+
+            const tdQuantity = document.createElement("td");
+            tdQuantity.innerHTML = `
+                        <input type="number"
+                               name="Products[${index}].Quantity"
+                               class="form-control quantity"
+                               value="${quantity}" min="1"
+                               onchange="calculateTotal()" />
+                    `;
+
+            const tdPrice = document.createElement("td");
+            tdPrice.innerHTML = `
+                        <input type="number"
+                               name="Products[${index}].Price"
+                               class="form-control price"
+                               value="${price}" min="0" step="0.01"
+                               onchange="calculateTotal()" />
+                    `;
+
+            const tdSubtotal = document.createElement("td");
+            tdSubtotal.className = "subtotal";
+            tdSubtotal.textContent = subtotal.toFixed(2);
+
+            const tdAction = document.createElement("td");
+            tdAction.innerHTML = `
+                        <button type="button"
+                                class="btn btn-danger btn-sm"
+                                onclick="removeProduct(this)">
+                            Delete
+                        </button>
+                    `;
+
+            row.append(tdProduct, tdQuantity, tdPrice,
+                tdSubtotal, tdAction);
+
+            document.getElementById("productList").appendChild(row);
+
+            index++;
+
+            select.value = "";
+            document.getElementById("quantity").value = 1;
+            document.getElementById("price").value = "";
+
+            calculateTotal();
+        }
+
+        function removeProduct(button) {
+            button.closest("tr").remove();
+            renumberProducts();
+            calculateTotal();
+        }
+
+        function renumberProducts() {
+
+            const rows = document.querySelectorAll("#productList tr");
+
+            rows.forEach((row, i) => {
+
+                row.querySelectorAll("input").forEach(input => {
+
+                    input.name = input.name.replace(
+                        /Products\[\d+\]/,
+                        `Products[${i}]`
+                    );
+
+                });
+
+            });
+
+            index = rows.length;
+        }
+
+        function calculateTotal() {
+
+            let total = 0;
+
+            document.querySelectorAll("#productList tr").forEach(row => {
+
+                const quantity =
+                    parseFloat(row.querySelector(".quantity").value) || 0;
+
+                const price =
+                    parseFloat(row.querySelector(".price").value) || 0;
+
+                const subtotal = quantity * price;
+
+                row.querySelector(".subtotal").textContent =
+                    subtotal.toFixed(2);
+
+                total += subtotal;
+
+            });
+
+            document.getElementById("total").textContent =
+                total.toFixed(2);
+        }
+
+        document.querySelector("form").addEventListener("submit", function(e) {
+
+            const rows = document.querySelectorAll("#productList tr");
+
+            if (rows.length === 0) {
+                e.preventDefault();
+                alert("Add at least one product");
+            }
+
+        });
+
+        // Calcular el total al cargar la factura
+        calculateTotal();
+
+    </script>
+}

@@ -1,0 +1,32 @@
+﻿
+
+@model IEnumerable<MVCWebASPCore.Data.Model.TbProduct>
+<h2>Products</h2>
+
+<a asp-action="Create" class="btn btn-primary">Create New Product</a>
+
+<table class="table" table-striped>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>   
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-sm btn-danger">Delete</a>
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table> 

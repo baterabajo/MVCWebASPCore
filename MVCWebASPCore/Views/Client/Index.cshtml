@@ -1,0 +1,34 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IEnumerable<MVCWebASPCore.Data.Model.TbClient>
+<h2>Clients</h2>
+
+<a asp-action="Create" class="btn btn-primary">Create New Client</a>
+
+<table class="table" table-striped>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in Model)
+        {
+            <tr>
+                <td>@client.Id</td>
+                <td>@client.Name</td>
+                     <td>
+                    <a asp-action="Edit" asp-route-id="@client.Id"   class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@client.Id" class="btn btn-sm btn-danger">Delete</a>
+
+
+               </td>
+            </tr>
+        }
+    </tbody>
+</table> 

@@ -1,0 +1,22 @@
+﻿@model MVCWebASPCore.Data.Model.TbProduct
+
+<h2>Edit Product</h2>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" class="form-control" placeholder="Add name Product" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+
+        
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" placeholder="Add Price Product" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+   
+    <button type="submit" class="btn btn-primary">Edit</button>
+    <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+</form>

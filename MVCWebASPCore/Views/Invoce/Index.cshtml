@@ -1,0 +1,85 @@
+﻿
+@using MVCWebASPCore.DTOs
+
+@model IEnumerable<InvoiceDto>
+
+<div class="mb-3">
+    <a asp-controller="Invoce"
+       asp-action="Create"
+       class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i>
+        Create Invoice
+    </a>
+</div>
+
+<h2>Listado de Facturas</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Productos</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var invoice in Model)
+        {
+            <tr>
+                <td>@invoice.Id</td>
+                <td>@invoice.Date?.ToString("dd/MM/yyyy")</td>
+                <td>@invoice.NameClient</td>
+                <td>@invoice.Total</td>
+
+                <td>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var product in invoice.Products)
+                            {
+                                <tr>
+                                    <td>@product.NameProduct</td>
+                                    <td>@product.Quantity</td>
+                                    <td>@product.Price</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+
+                <!-- Botón Edit -->
+                <td>
+                    <a asp-controller="Invoce"
+                       asp-action="Edit"
+                       asp-route-id="@invoice.Id"
+                       class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil-square"></i>
+                        Edit
+                    </a>
+
+                    <a asp-controller="Invoce"
+                       asp-action="Delete"
+                       asp-route-id="@invoice.Id"
+                       class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                        Delete
+                    </a>
+                </td>
+
+             
+
+            </tr>
+        }
+    </tbody>
+</table>
