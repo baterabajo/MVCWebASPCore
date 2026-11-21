@@ -36,7 +36,7 @@
 
 <summary>Ver Diagrama de base de datos</summary>
 
-![DiagramaBAse](Images/DiagramaBAse.png)
+![DiagramaBAse](MVCWebASPCore/Images/DiagramaBAse.png)
 
 </details>
 
@@ -264,7 +264,7 @@ GO
 
 <summary>Ver Diagrama de base de datos</summary>
 
-![4](images/4.png)
+![4](MVCWebASPCore/Images/4.png)
 ###### Agregamos un nuevo Api controlador en blanco lo llamamos Client ya que en la base esta [dbo].[Tb_Client]
 
 </details>
@@ -273,7 +273,7 @@ GO
 
 <summary>Ver estructura del projecto </summary>
 
-![strcuturaProjecto](Images/strcuturaProjecto.png)
+![strcuturaProjecto](MVCWebASPCore/Images/strcuturaProjecto.png)
 
 </details>
 
