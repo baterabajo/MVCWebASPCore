@@ -262,11 +262,11 @@ GO
 
 <details>
 
-<summary>Ver Diagrama de base de datos</summary>
+<summary>Ver Agregamos un nuevo Api controlador en blanco  Cliento de  Tb_Client</summary>
 
-![4](MVCWebASPCore/Images/4.png)
-###### Agregamos un nuevo Api controlador en blanco lo llamamos Client ya que en la base esta [dbo].[Tb_Client]
-
+![controller](MVCWebASPCore/Images/controller.png)
+![controller2](MVCWebASPCore/Images/controller2.png)
+![controller3](MVCWebASPCore/Images/controller3.png)
 </details>
 
 <details> 
