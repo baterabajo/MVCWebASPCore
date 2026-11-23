@@ -1,0 +1,40 @@
+
+https://www.youtube.com/watch?v=8WO-WlZ9NoA
+  dotnet restore
+ 
+ dotnet publish -c Release -o out
+
+MVCWebASPCore.dll
+
+dotnet out\MVCWebASPCore.dll
+
+$env:ASPNETCORE_ENVIRONMENT="Development"
+
+https://hub.docker.com/r/microsoft/dotnet-sdk/
+
+docker pull mcr.microsoft.com/dotnet/sdk:10.0
+
+
+docker --version
+
+https://www.docker.com/products/docker-desktop/?utm_source=chatgpt.com
+
+1. Abrir PowerShell como administrador
+
+wsl --install
+
+
+El archivo launchSettings.json (ubicado en la carpeta Properties de un proyecto .NET / ASP.NET Core) define cómo se inicia y ejecuta la aplicación 
+exclusivamente en el entorno de desarrollo local. No se incluye al publicar la aplicación en producción.
+
+Para qué sirve
+
+• Perfiles de inicio: Permite configurar distintos modos de ejecución (por ejemplo, http, https, IIS Express o Docker) con puertos y URLs específicos.
+• Variables de entorno: Define valores como ASPNETCORE_ENVIRONMENT (Development, Staging, Production), que determinan qué archivo 
+appsettings.<Entorno>.json se carga.
+• Comportamiento del navegador: Controla opciones como launchBrowser (si abre o no el navegador al iniciar) y applicationUrl.
+
+Diferencia con appsettings.json
+
+• launchSettings.json: Afecta el arranque local en IDEs (Visual Studio, Rider, VS Code) o con dotnet run.
+• appsettings.json: Guarda la configuración de la aplicación durante su ejecución, tanto en desarrollo como en producción

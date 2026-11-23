@@ -3,6 +3,10 @@ using MVCWebASPCore.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//builder.WebHost.UseUrls("http://localhost:5191");
+
+builder.WebHost.UseUrls("http://0.0.0.0:8080");//docker contenedor
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
